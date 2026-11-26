@@ -1,0 +1,72 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 03-test-automation
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run the tests
+        run: pytest -v
+
+  sql-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 05-sql-testing
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run the SQL tests
+        run: pytest -v
+
+  
+  web-ui-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 06-web-ui-automation
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install browser
+        run: playwright install --with-deps chromium
+
+      - name: Run the web UI tests
+        run: pytest -v      
